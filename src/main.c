@@ -5,8 +5,7 @@
 #include <limits.h>
 #include "sort.h"
 
-#define stderr_printf(...) fprintf(stderr, __VA_ARGS__)
-#define MAX_INPUT_STRING_LENGTH 8191 // Нашёл в интернете, что нельзя ввести больше 8191 символов в командную строку
+#define error(...) (fprintf(stderr, __VA_ARGS__))
 
 int work_with_params (long long* restrict from , long long* restrict to , int number_of_params, char* params[] )
 {
@@ -75,50 +74,36 @@ void free_array_string(int* array_string[])                 // "очищаяем
     }
 }
 
-int string_to_array (long long* restrict from , long long* restrict to , long long* restrict array[] , char* restrict input_string)
+int string_to_array(long long* restrict from ,long long* restrict to, long long* restrict array[] , int max_size_of_array)
 {
-    int flag = 0;                                                               // Переменная, чтобы знать какой длины нужно создавать вторую строку
-    int second_flag=0;                                                          // Переменная, чтобы знать номер элемента, чтобы начать вносить цифри во вторую строку
-    int elements_in_array =0;                                                   // Количество цифр
-    long long int temp_int;
+    int elements_in_array = 0;                                                          // Переменная, обозначающа яколичество цифр в массиве
+    long long number;                                                                   // Временное число, которые мы проверим на принадлежность к (from , to)
+    char check_for_the_last_element;                                                    // Переменная, нужная для понимания, когда будет последнее число в строке
 
-    for(int i = 0 ; i < strlen(input_string) ; ++i)                                 // Пробегаем цикл от 0 элемента до последнего
-    {
-        if((input_string[i+1] == ' ') || (input_string[i+1] == '\0'))               // Если следуюзий символ пробел или конец строки, то значит мы на последней цифре числа, и можно его обрабатывать
+    do {
+
+        if(scanf("%lli%c" , &number , &check_for_the_last_element ) !=2 )               // Если возникла ошибка при считывании числа, нужно завершить выполнение и выдать ошибку
         {
-            char string_with_number [flag+1];                                       // Создаем вторую строку, куда запишем цифры в виде строки
-            for(int j = 0 ; j <= flag ; ++j)
-            {
-                string_with_number[j] = input_string[second_flag + j];              // Заполним вторую строку цифрами в виде символов
-            }
-
-            temp_int =strtoll(string_with_number , NULL, 10 );      // Теперь, после проверки вносим только что добавленное число в массив цифр
-
-            if(temp_int > *from && temp_int < *to)
-            {
-                array[elements_in_array] = temp_int;
-                elements_in_array +=1;
-            }
-            else if(temp_int > to)
-            {
-                stderr_printf("%lli ", temp_int);
-            }
-            else if(temp_int < from)
-            {
-                printf("%lli ", temp_int);
-            }
-
-            free_array_string(string_with_number);                                  // "Очищяем" вторую строку, чтобы не было проблем
-            second_flag += (flag + 2);                                              // Переносим флаг на начало следующего числа
-            flag = -1;
+            error("can't read [%d] element" , elements_in_array);
+            check_for_the_last_element = '\n';
         }
-        else
+        if(number < *from )
         {
-            flag+=1;
+            printf("%lli " , number);
         }
-    }
+        if(number > *to)
+        {
+            error("%lli " , number);
+        }
+        if((number > *from) && (number < *to))                                          // Если число спокойно прошло через все ошибки, то вбиваем его в массив
+        {
+            array[elements_in_array] = number;
+            elements_in_array+=1;
+        }
+
+    } while (check_for_the_last_element != '\n' && elements_in_array < max_size_of_array);  // Делаем столько раз, сколько нам введут чисел
+
     return elements_in_array;
-
 }
 
 int main(int argc, char** argv) {
@@ -131,10 +116,8 @@ int main(int argc, char** argv) {
         return result_of_work;                                              // Возвращаем ошибку и завершаем работу
     }
 
-    char input_string[MAX_INPUT_STRING_LENGTH];                             // Создали массив из символов длинной максимально возможного ввода в консоль
-    gets(input_string);                                                     // Считали входхную строку
+    int elements_in_array = string_to_array(&from , &to, &array , 100);        // Получаем количество цифр(элементов) в строке, параллельно заполняя массив цифрами
 
-    int elements_in_array = string_to_array(&from , &to, &array , &input_string);        // Получаем количество цифр(элементов) в строке, параллельно заполняя массив цифрами
     work_with_array(array , &elements_in_array );
 
 }
