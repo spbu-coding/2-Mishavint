@@ -1,29 +1,39 @@
+	.file	"sort.c"
+	.text
+	.p2align 4,,15
+	.globl	work_with_array
+	.def	work_with_array;	.scl	2;	.type	32;	.endef
+	.seh_proc	work_with_array
 work_with_array:
-        mov     edx, DWORD PTR [rsi]
-        mov     r8, rdi
-        sub     edx, 1
-        test    edx, edx
-        jle     .L1
-        lea     r9, [rdi+8]
+	.seh_endprologue
+	movl	(%rdx), %edx
+	subl	$1, %edx
+	testl	%edx, %edx
+	jle	.L1
+	leaq	8(%rcx), %r11
+	.p2align 4,,10
 .L3:
-        sub     edx, 1
-        mov     rax, r8
-        mov     rdi, rdx
-        lea     rsi, [r9+rdx*8]
+	subl	$1, %edx
+	movq	%rcx, %rax
+	leaq	(%r11,%rdx,8), %r9
+	movq	%rdx, %r10
+	.p2align 4,,10
 .L5:
-        mov     rdx, QWORD PTR [rax]
-        mov     rcx, QWORD PTR [rax+8]
-        cmp     rdx, rcx
-        jbe     .L4
-        movsx   rdx, edx
-        mov     QWORD PTR [rax], rcx
-        mov     QWORD PTR [rax+8], rdx
+	movq	(%rax), %rdx
+	movq	8(%rax), %r8
+	cmpq	%r8, %rdx
+	jbe	.L4
+	movslq	%edx, %rdx
+	movq	%r8, (%rax)
+	movq	%rdx, 8(%rax)
 .L4:
-        add     rax, 8
-        cmp     rsi, rax
-        jne     .L5
-        mov     edx, edi
-        test    edi, edi
-        jne     .L3
+	addq	$8, %rax
+	cmpq	%rax, %r9
+	jne	.L5
+	testl	%r10d, %r10d
+	movl	%r10d, %edx
+	jne	.L3
 .L1:
-        ret
+	ret
+	.seh_endproc
+	.ident	"GCC: (x86_64-posix-seh-rev0, Built by MinGW-W64 project) 8.1.0"

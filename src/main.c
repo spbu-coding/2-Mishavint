@@ -3,7 +3,9 @@
 #include <string.h>
 #include <stddef.h>
 #include <limits.h>
-#include "sort.h"
+//#include "sort.c"
+
+extern void work_with_array(long long* restrict array[] , int* number_of_elements);
 
 #define error(...) (fprintf(stderr, __VA_ARGS__))
 
