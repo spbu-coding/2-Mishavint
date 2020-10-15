@@ -68,13 +68,6 @@ int work_with_params (long long* restrict from , long long* restrict to , int nu
     return 0;           // Если всё прошло успешно, возвращаем 0
 }
 
-void free_array_string(int* array_string[])                 // "очищаяем массив", чтобы можно было опять его заполнить цифрами
-{
-    for(int i = 0 ; i < strlen(array_string) ; ++i)
-    {
-        array_string[i] = ' ';
-    }
-}
 
 int string_to_array(long long* restrict from ,long long* restrict to, long long* restrict array[] , int max_size_of_array)
 {
