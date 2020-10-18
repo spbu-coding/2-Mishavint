@@ -4,7 +4,7 @@
 #include <stddef.h>
 #include <limits.h>
 
-extern void work_with_array(long long* restrict array , int* number_of_elements);
+extern void work_with_array(long long* array , int* number_of_elements);
 
 #define error(...) (fprintf(stderr, __VA_ARGS__))
 
