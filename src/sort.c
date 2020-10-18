@@ -6,9 +6,9 @@ void work_with_array(long long* restrict array[] , int* number_of_elements)
         {
             if(array[j] > array[j+1])
             {
-                int temp = *array[j];
+                long long int temp = array[j];
                 array[j] = array[j+1];
-                *array[j+1] = temp;
+                array[j+1] = temp;
             }
         }
     }

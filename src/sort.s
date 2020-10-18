@@ -23,13 +23,13 @@ work_with_array:
 	movq	8(%rax), %rdx
 	cmpq	%rdx, %r8
 	jbe	.L4
-	movq	(%r8), %r8
-	movq	%rdx, (%rax)
-	movslq	%r8d, %r8
-	movq	%r8, (%rdx)
+	movq	%rdx, %xmm0
+	movq	%r8, %xmm1
+	punpcklqdq	%xmm1, %xmm0
+	movups	%xmm0, (%rax)
 .L4:
 	addq	$8, %rax
-	cmpq	%rax, %r9
+	cmpq	%r9, %rax
 	jne	.L5
 	testl	%r10d, %r10d
 	movl	%r10d, %edx
