@@ -3,7 +3,6 @@
 #include <string.h>
 #include <stddef.h>
 #include <limits.h>
-//#include "sort.c"
 
 extern void work_with_array(long long* restrict array , int* number_of_elements);
 
@@ -20,7 +19,7 @@ int work_with_params (long long* restrict from , long long* restrict to , int nu
         return -2;
     }
     if(number_of_params > 2 && ( ((strncmp(params[1] , "--from=" , 7) ==0 )  && (strncmp(params[2] , "--from=" , 7) ==0))
-                                 || ((strncmp(params[1] , "--to=" , 5) ==0 )  && (strncmp(params[2] , "--to=" , 5) ==0) ) )  )// Если есть два одинаковых параметра, то это ошибка (-3)
+                        || ((strncmp(params[1] , "--to=" , 5) ==0 )  && (strncmp(params[2] , "--to=" , 5) ==0) ) )  )// Если есть два одинаковых параметра, то это ошибка (-3)
     {
         return -3;
     }
@@ -30,7 +29,7 @@ int work_with_params (long long* restrict from , long long* restrict to , int nu
     int second_flag_for_from = 1 , second_flag_for_to = 1;
     for (int i = 1 ; i < number_of_params ; ++i)                                        // Прогоняем циклом все параметры, которые получили из консоли
     {
-        if( (*(from) == 0) && (strncmp(params[i]  , "--from=" , 7) == 0))     // Если нашли параметр, где начало строки совпадает с "--from=" то надо вычислить то, что нам надо из этого параметра
+            if( (*(from) == 0) && (strncmp(params[i]  , "--from=" , 7) == 0))     // Если нашли параметр, где начало строки совпадает с "--from=" то надо вычислить то, что нам надо из этого параметра
         {
             *(from) = strtoll(params[i] +7 , NULL, 10 );  // Вбиваем число в переменную
 

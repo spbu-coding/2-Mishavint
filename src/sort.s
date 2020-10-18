@@ -19,13 +19,14 @@ work_with_array:
 	movq	%rdx, %r10
 	.p2align 4,,10
 .L5:
-	movq	(%rax), %rdx
-	movq	8(%rax), %r8
-	cmpq	%r8, %rdx
+	movq	(%rax), %r8
+	movq	8(%rax), %rdx
+	cmpq	%rdx, %r8
 	jbe	.L4
-	movslq	%edx, %rdx
-	movq	%r8, (%rax)
-	movq	%rdx, 8(%rax)
+	movq	(%r8), %r8
+	movq	%rdx, (%rax)
+	movslq	%r8d, %r8
+	movq	%r8, (%rdx)
 .L4:
 	addq	$8, %rax
 	cmpq	%rax, %r9
