@@ -83,7 +83,7 @@ int string_to_array(long long* restrict from ,long long* restrict to, long long*
         }
         if(number < *from )
         {
-            printf("%lli " , number);
+            fprintf(stdout, "%lli " , number);
         }
         if(number > *to)
         {
@@ -115,4 +115,5 @@ int main(int argc, char** argv) {
 
     work_with_array(array , &elements_in_array );
 
+    return 0;
 }
