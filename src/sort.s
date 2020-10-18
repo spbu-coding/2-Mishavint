@@ -2,38 +2,43 @@
 	.text
 	.p2align 4,,15
 	.globl	work_with_array
-	.def	work_with_array;	.scl	2;	.type	32;	.endef
-	.seh_proc	work_with_array
+	.type	work_with_array, @function
 work_with_array:
-	.seh_endprologue
-	movl	(%rdx), %edx
+.LFB0:
+	.cfi_startproc
+	movl	(%rsi), %edx
 	subl	$1, %edx
 	testl	%edx, %edx
 	jle	.L1
-	leaq	8(%rcx), %r11
+	leaq	8(%rdi), %r9
 	.p2align 4,,10
+	.p2align 3
 .L3:
 	subl	$1, %edx
-	movq	%rcx, %rax
-	leaq	(%r11,%rdx,8), %r9
-	movq	%rdx, %r10
+	movq	%rdi, %rax
+	leaq	(%r9,%rdx,8), %r8
+	movq	%rdx, %rsi
 	.p2align 4,,10
+	.p2align 3
 .L5:
-	movq	(%rax), %r8
+	movq	(%rax), %rcx
 	movq	8(%rax), %rdx
-	cmpq	%rdx, %r8
+	cmpq	%rdx, %rcx
 	jbe	.L4
-	movq	(%r8), %r8
+	movq	(%rcx), %rcx
 	movq	%rdx, (%rax)
-	movq	%r8, (%rdx)
+	movq	%rcx, (%rdx)
 .L4:
 	addq	$8, %rax
-	cmpq	%r9, %rax
+	cmpq	%r8, %rax
 	jne	.L5
-	testl	%r10d, %r10d
-	movl	%r10d, %edx
+	testl	%esi, %esi
+	movl	%esi, %edx
 	jne	.L3
 .L1:
-	ret
-	.seh_endproc
-	.ident	"GCC: (x86_64-posix-seh-rev0, Built by MinGW-W64 project) 8.1.0"
+	rep ret
+	.cfi_endproc
+.LFE0:
+	.size	work_with_array, .-work_with_array
+	.ident	"GCC: (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0"
+	.section	.note.GNU-stack,"",@progbits
