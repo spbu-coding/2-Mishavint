@@ -64,7 +64,7 @@ int work_with_params (long long* restrict from , long long* restrict to , int nu
     return 0;           // Если всё прошло успешно, возвращаем 0
 }
 
-int string_to_array(long long* restrict from ,long long* restrict to, long long* restrict array , int max_size_of_array)
+int string_to_array(long long* restrict from ,long long* restrict to, long long* restrict array , long long* restrict array2 , int max_size_of_array)
 {
     int elements_in_array = 0;                                                          // Переменная, обозначающа яколичество цифр в массиве
     long long number;                                                                   // Временное число, которые мы проверим на принадлежность к (from , to)
@@ -88,6 +88,7 @@ int string_to_array(long long* restrict from ,long long* restrict to, long long*
         if((number > *from) && (number < *to))                                          // Если число спокойно прошло через все ошибки, то вбиваем его в массив
         {
             array[elements_in_array] = number;
+            array2[elements_in_array] = number;
             elements_in_array+=1;
         }
 
@@ -99,6 +100,7 @@ int string_to_array(long long* restrict from ,long long* restrict to, long long*
 int main(int argc, char** argv) {
     long long int from = 0, to  = 0;                                  // Заполняем переменные нулями, пригодится дальшe
     long long int array[100];
+    long long int copy_of_first_array [100];
 
     int result_of_work = work_with_params(&from , &to , argc , argv );      // Создал функцию, которая заполняет переменные и возвращает возможные ошибки
     if(result_of_work != 0 )                                                // Если всё-таки что-то пошло не так, корректно вывести ошибку
@@ -106,7 +108,7 @@ int main(int argc, char** argv) {
         return result_of_work;                                              // Возвращаем ошибку и завершаем работу
     }
 
-    int elements_in_array = string_to_array(&from , &to, array , 100);        // Получаем количество цифр(элементов) в строке, параллельно заполняя массив цифрами
+    int elements_in_array = string_to_array(&from , &to, array , copy_of_first_array , 100);        // Получаем количество цифр(элементов) в строке, параллельно заполняя массив цифрами
     if(elements_in_array < 0 )
     {
         return -5;
@@ -114,5 +116,14 @@ int main(int argc, char** argv) {
 
     work_with_array(array , &elements_in_array );
 
-    return 0;
+    int result_of_return = 0;
+    for(int i = 0 ; i < elements_in_array ; ++i)
+    {
+        if(array[i] != copy_of_first_array[i])
+        {
+            result_of_return+=1;
+        }
+    }
+
+    return result_of_return;
 }
