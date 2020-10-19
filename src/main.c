@@ -5,8 +5,6 @@
 #include <limits.h>
 #include "sort.h"
 
-#define error(...) (fprintf(stderr, __VA_ARGS__))
-
 int work_with_params (long long* restrict from , long long* restrict to , int number_of_params, char* params[] )
 {
     if(number_of_params < 2 ) // Если число параметров меньше, чем 2, то это ошибка (-1)
@@ -76,8 +74,8 @@ int string_to_array(long long* restrict from ,long long* restrict to, long long*
 
         if(scanf("%lli%c" , &number , &check_for_the_last_element ) !=2 )               // Если возникла ошибка при считывании числа, нужно завершить выполнение и выдать ошибку
         {
-            error("can't read [%d] element" , elements_in_array);
-            check_for_the_last_element = '\n';
+            fprintf(stderr , "can't read [%d] element" , elements_in_array);
+            return -1;
         }
         if(number < *from )
         {
@@ -85,7 +83,7 @@ int string_to_array(long long* restrict from ,long long* restrict to, long long*
         }
         if(number > *to)
         {
-            error("%lli " , number);
+            fprintf(stderr , "%lli " , number);
         }
         if((number > *from) && (number < *to))                                          // Если число спокойно прошло через все ошибки, то вбиваем его в массив
         {
@@ -109,6 +107,10 @@ int main(int argc, char** argv) {
     }
 
     int elements_in_array = string_to_array(&from , &to, array , 100);        // Получаем количество цифр(элементов) в строке, параллельно заполняя массив цифрами
+    if(elements_in_array < 0 )
+    {
+        return -5;
+    }
 
     work_with_array(array , &elements_in_array );
 
