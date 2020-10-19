@@ -3,8 +3,7 @@
 #include <string.h>
 #include <stddef.h>
 #include <limits.h>
-
-extern void work_with_array(long long* array , int* number_of_elements);
+#include "sort.h"
 
 #define error(...) (fprintf(stderr, __VA_ARGS__))
 
@@ -98,7 +97,6 @@ int string_to_array(long long* restrict from ,long long* restrict to, long long*
 
     return elements_in_array;
 }
-
 
 int main(int argc, char** argv) {
     long long int from = 0, to  = 0;                                  // Заполняем переменные нулями, пригодится дальшe
