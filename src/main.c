@@ -77,15 +77,15 @@ int string_to_array(long long* restrict from ,long long* restrict to, long long*
             fprintf(stderr , "can't read [%d] element" , elements_in_array);
             return -1;
         }
-        if(number < *from )
+        if(number <= *from )
         {
             fprintf(stdout, "%lli " , number);
         }
-        if(number > *to)
+        if(number >= *to)
         {
             fprintf(stderr , "%lli " , number);
         }
-        if((number > *from) && (number < *to))                                          // Если число спокойно прошло через все ошибки, то вбиваем его в массив
+        if((number > *from) && (number < *to))                                     // Если число спокойно прошло через все ошибки, то вбиваем его в массив
         {
             array[elements_in_array] = number;
             array2[elements_in_array] = number;
